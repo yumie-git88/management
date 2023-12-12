@@ -13,10 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('password_resets', function (Blueprint $table) {
-            $table->string('email')->index();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
+        Schema::create('sales', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('product_id')->unsigned();
+            $table->timestamps();
+        });
+        Schema::table('sales', function (Blueprint $table) {
+            $table->foreign('product_id')->references('id')->on('products'); // 外部キー制約を追加
         });
     }
 
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('password_resets');
+        Schema::dropIfExists('sales');
     }
 };
