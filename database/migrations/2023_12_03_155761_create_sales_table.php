@@ -14,12 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('sales', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('product_id')->unsigned();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('product_id');
             $table->timestamps();
-        });
-        Schema::table('sales', function (Blueprint $table) {
-            $table->foreign('product_id')->references('id')->on('products'); // 外部キー制約を追加
+
+            // $table->foreign('product_id')->references('id')->on('products'); // 外部キー制約を追加
         });
     }
 
