@@ -13,13 +13,26 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request) //)
     {
+        // Productモデルに基づいてクエリビルダを初期化
+        $query = Product::query(); // この行の後にクエリを逐次構築
+
+        // 商品名の検索キーワードがある場合、そのキーワードを含む商品をクエリに追加
+        if($search = $request->search){
+            $query->where('product_name', 'LIKE', "%{$search}%");
+        }
+
+        // メーカー名の検索キーワードがある場合、そのキーワードを含むメーカー名をクエリに追加
+        if($search = $request->search){
+            $query->where('company_id', 'LIKE', "%{$search}%");
+        }
+
         // 全ての商品情報を取得
         $products = Product::paginate(10); // all();
 
-        // 商品一覧画面を表示し、取得した全ての商品情報を画面に渡す。
-        return view('products.index', compact('products'));
+        // 商品一覧画面を表示し、取得した全ての商品情報を画面に渡す
+        return view('products.index', ['products' => $products]); // compact('products'));
     }
 
     /**

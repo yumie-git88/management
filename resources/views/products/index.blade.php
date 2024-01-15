@@ -4,9 +4,38 @@
 <div class="container">
     <h1 class="mb-4">商品情報一覧</h1>
 
-    <a href="{{ route('products.create') }}" class="btn btn-primary mb-3">商品新規登録</a>
+    <!-- 検索フォームのセクション -->
+    <div class="search mt-5">
+        
+        <!-- 検索のタイトル -->
+        <h2>検索フォーム</h2>
+        
+        <!-- 検索フォーム。GETメソッドで、商品一覧のルートにデータを送信 -->
+        <form action="{{ route('products.index') }}" method="GET" class="row g-3">
 
-   
+            <!-- 商品名検索用の入力欄 -->
+            <div class="col-sm-12 col-md-3">
+                <input type="text" name="search" class="form-control" placeholder="商品名" value="{{ request('search') }}">
+            </div>
+
+            <!--メーカー名検索用の入力欄 -->
+            <div class="col-sm-12 col-md-2">
+                <input type="select" name="search" class="form-control" placeholder="メーカー名" value="{{ request('company_id') }}">
+            </div>
+
+            <!-- 検索ボタン -->
+            <div class="col-sm-12 col-md-1">
+                <button class="btn btn-outline-secondary" type="submit">検索</button>
+            </div>
+            
+            <!-- 検索条件をリセットするリンクボタン -->
+            <a href="{{ route('products.index') }}" class="btn btn-success col-md-2">検索条件をリセット</a>
+        </form>
+    </div>
+
+    <div>
+    <a href="{{ route('products.create') }}" class="btn btn-primary mt-3">商品新規登録</a>
+    </div>
 
     <div class="products mt-5">
         <h2>商品情報</h2>
@@ -49,7 +78,8 @@
         </table>
     </div>
 
-    {{ $products->links() }} 
+    <!-- {{ $products->links() }} -->
+    {{ $products->appends(request()->query())->links() }}
 
 </div>
 @endsection
