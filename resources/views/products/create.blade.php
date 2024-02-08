@@ -12,7 +12,7 @@
 
         <div class="mb-3">
             <label for="product_name" class="form-label">商品名:</label>
-            <input id="product_name" type="text" name="product_name" class="form-control" required>
+            <input id="product_name" type="text" name="product_name" class="form-control" required value="{{ old('product_name')}}">
         </div>
         
         <div class="mb-3">
@@ -26,17 +26,17 @@
         
         <div class="mb-3">
             <label for="price" class="form-label">価格:</label>
-            <input id="price" type="text" name="price" class="form-control" required>
+            <input id="price" type="text" name="price" class="form-control" required value="{{ old('price')}}">
         </div>
         
         <div class="mb-3">
             <label for="stock" class="form-label">在庫数:</label>
-            <input id="stock" type="text" name="stock" class="form-control" required>
+            <input id="stock" type="text" name="stock" class="form-control" required value="{{ old('stock')}}">
         </div>
         
         <div class="mb-3">
             <label for="comment" class="form-label">コメント:</label>
-            <textarea id="comment" name="comment" class="form-control" rows="3" required></textarea>
+            <textarea id="comment" name="comment" class="form-control" rows="3" required>{{ old('comment')}}</textarea>
         </div>
         
         <div class="mb-3">

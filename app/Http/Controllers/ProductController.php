@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product; // 追加
-use App\Models\Company; // 追加
+use App\Models\Product; // 追加変更
+use App\Models\Company; // 追加 Companies;変更なし
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB; // 追加
+use App\Http\Controllers\Controller; // 追加
 
 class ProductController extends Controller
 {
@@ -15,24 +17,43 @@ class ProductController extends Controller
      */
     public function index(Request $request) //)
     {
-        // Productモデルに基づいてクエリビルダを初期化
+        // $company = new Company;
+
+        //$companies = Companies::query(); // テーブルから全てのレコードを取得する 追加
+        
+        // モデルに基づいてクエリビルダを初期化
         $query = Product::query(); // この行の後にクエリを逐次構築
+
+        // 検索フォームに入力された値を取得
+        $search = $request->input('search');
+        $company_id = $request->input('company_id');
 
         // 商品名の検索キーワードがある場合、そのキーワードを含む商品をクエリに追加
         if($search = $request->search){
             $query->where('product_name', 'LIKE', "%{$search}%");
         }
 
-        // メーカー名の検索キーワードがある場合、そのキーワードを含むメーカー名をクエリに追加
-        if($search = $request->search){
-            $query->where('company_id', 'LIKE', "%{$search}%");
+        // メーカー名が同じ場合、そのメーカー名をクエリに追加
+        if($company_id = $request->company_id){
+            $query->where('company_id', '=', $company_id); // company_name
         }
 
-        // 全ての商品情報を取得
-        $products = Product::paginate(10); // all();
+        // ソートのパラメータが指定されている場合、そのカラムでソートを行う
+        if($sort = $request->sort){
+            $direction = $request->direction == 'desc' ? 'desc' : 'asc'; // directionがdescでない場合は、デフォルトでascとする
+            $query->orderBy($sort, $direction);
+        }
+
+        $reviews = $query->get();
+
+        $companies = Company::all(); //追加 テーブルから全てのレコードを取得する
+
+        // 上記の条件に基づいて商品を取得し、10件ごとのページネーションを適用
+        $products = $query->paginate(10); // $products = Product::paginate(10); // all();
 
         // 商品一覧画面を表示し、取得した全ての商品情報を画面に渡す
-        return view('products.index', ['products' => $products]); // compact('products'));
+        // return view('products.index', ['products' => $products, 'companies' => $companies]);
+        return view('products.index', compact('products', 'companies'));
     }
 
     /**
@@ -57,6 +78,16 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = ['parameter' => 'alpha:ascii'];
+
+        // アルファベット
+        $data = ['parameter' => 'a'];
+        Validator::make($data, $rules)->passes(); // true
+
+        // 日本語
+        $data = ['parameter' => 'あいうえお'];
+        Validator::make($data, $rules)->passes(); // false
+
         //リクエストされた情報を確認して、必要な情報が全て揃っているかチェック
         $request->validate([
             'product_name' => 'required', //required必須
@@ -87,7 +118,7 @@ class ProductController extends Controller
         $product->save();
 
         // 全ての処理が終わったら、商品一覧画面に戻る
-        return redirect('products');
+        return redirect('products',);
     }
 
     /**
@@ -160,5 +191,11 @@ class ProductController extends Controller
 
         // 全ての処理が終わったら、商品一覧画面に戻る
         return redirect('/products');
+    }
+
+    //「\\」「%」「_」などの記号を文字としてエスケープさせる
+    public static function escapeLike($str)
+    {
+        return str_replace(['\\', '%', '_'], ['\\\\', '\%', '\_'], $str);
     }
 }

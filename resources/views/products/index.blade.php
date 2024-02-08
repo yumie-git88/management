@@ -20,16 +20,21 @@
 
             <!--メーカー名検索用の入力欄 -->
             <div class="col-sm-12 col-md-2">
-                <input type="select" name="search" class="form-control" placeholder="メーカー名" value="{{ request('company_id') }}">
+                <select name="company_id" id="company_id" class="form-control" data-toggle="select" value="{{ old('company_id')}}">
+                    <option value="">未選択</option>
+                    @foreach($companies as $company)
+                    <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                    @endforeach
+                </select>
             </div>
 
             <!-- 検索ボタン -->
             <div class="col-sm-12 col-md-1">
-                <button class="btn btn-outline-secondary" type="submit">検索</button>
+                <button class="btn btn-success" type="submit">検索</button> <!-- btn色交換 -->
             </div>
             
             <!-- 検索条件をリセットするリンクボタン -->
-            <a href="{{ route('products.index') }}" class="btn btn-success col-md-2">検索条件をリセット</a>
+            <a href="{{ route('products.index') }}" class="btn btn-outline-secondary col-md-2">検索条件をリセット</a>
         </form>
     </div>
 
@@ -66,7 +71,7 @@
                     <td>
                         <a href="{{ route('products.show', $product) }}" class="btn btn-info btn-sm mx-1">詳細表示</a>
                         <!-- <a href="{{ route('products.edit', $product) }}" class="btn btn-primary btn-sm mx-1">編集</a> -->
-                        <form method="POST" action="{{ route('products.destroy', $product) }}" class="d-inline">
+                        <form method="POST" action="{{ route('products.destroy', $product) }}" class="d-inline" onsubmit="return confirm('本当に削除しますか？')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm mx-1">削除</button>

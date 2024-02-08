@@ -33,3 +33,4 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('products', ProductController::class);
 });
+
