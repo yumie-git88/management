@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product; // 追加変更
-use App\Models\Company; // 追加 Companies;変更なし
+use App\Models\Product; // 追加
+use App\Models\Company; // 追加
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // 追加
-use App\Http\Controllers\Controller; // 追加
 
 class ProductController extends Controller
 {
@@ -17,12 +16,9 @@ class ProductController extends Controller
      */
     public function index(Request $request) //)
     {
-        // $company = new Company;
-
-        //$companies = Companies::query(); // テーブルから全てのレコードを取得する 追加
-        
         // モデルに基づいてクエリビルダを初期化
         $query = Product::query(); // この行の後にクエリを逐次構築
+        $companies = Company::all(); //追加 テーブルから全てのレコードを取得する
 
         // 検索フォームに入力された値を取得
         $search = $request->input('search');
@@ -40,19 +36,15 @@ class ProductController extends Controller
 
         // ソートのパラメータが指定されている場合、そのカラムでソートを行う
         if($sort = $request->sort){
-            $direction = $request->direction == 'desc' ? 'desc' : 'asc'; // directionがdescでない場合は、デフォルトでascとする
+            // directionがdescでない場合は、デフォルトでascとする
+            $direction = $request->direction == 'desc' ? 'desc' : 'asc';
             $query->orderBy($sort, $direction);
         }
 
-        $reviews = $query->get();
-
-        $companies = Company::all(); //追加 テーブルから全てのレコードを取得する
-
         // 上記の条件に基づいて商品を取得し、10件ごとのページネーションを適用
-        $products = $query->paginate(10); // $products = Product::paginate(10); // all();
+        $products = $query->paginate(10); // Product::paginate(10); // all();
 
         // 商品一覧画面を表示し、取得した全ての商品情報を画面に渡す
-        // return view('products.index', ['products' => $products, 'companies' => $companies]);
         return view('products.index', compact('products', 'companies'));
     }
 

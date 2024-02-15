@@ -25,7 +25,7 @@ class Product extends Model
         return $this->hasMany(Sale::class);
     }
 
-    // Productモデルがcompanysテーブルとリレーション関係を結ぶ為のメソッド
+    // Productモデルがcompaniesテーブルとリレーション関係を結ぶ為のメソッド
     public function company()
     {
         return $this->belongsTo(Company::class);
