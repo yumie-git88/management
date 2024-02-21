@@ -30,7 +30,7 @@ class ProductController extends Controller
     
             // 商品名の検索キーワードがある場合、そのキーワードを含む商品をクエリに追加
             if ($search = $request->search) {
-                $query->where('product_name', 'LIKE', "%{$search}%");
+                $query->where('product_name', 'LIKE', '%' . self::escapeLike($search) . '%');
             }
     
             // メーカー名が同じ場合、そのメーカー名をクエリに追加
@@ -65,14 +65,8 @@ class ProductController extends Controller
     public function create()
     {
         try {
-            // \DB::beginTransaction(); // トランザクションの開始
-
             // 商品作成画面で必要な、全ての会社の情報を取得。
             $companies = Company::all();
-
-            // ->saveOrFail(); // 更新した商品を保存 失敗したら例外を返す
-
-            // \DB::commit(); // 全ての更新処理が成功したので処理を確定する
 
             //商品作成画面を表示し、取得した全ての会社情報を画面に渡す。
             return view('products.create', compact('companies'));
@@ -106,8 +100,8 @@ class ProductController extends Controller
             $request->validate([
                 'product_name' => 'required', //required必須
                 'company_id' => 'required',
-                'price' => 'required',
-                'stock' => 'required',
+                'price' => 'required|numeric', //数値
+                'stock' => 'required|numeric', //数値
                 'comment' => 'nullable', //未入力OK
                 'img_path' => 'nullable|image|max:2048',
             ]);
@@ -236,7 +230,7 @@ class ProductController extends Controller
         }
     }
 
-    //「\\」「%」「_」などの記号を文字としてエスケープさせる
+    //「\\」「%」「_」などの記号を文字としてエスケープさせる セキュリティ対策
     public static function escapeLike($str)
     {
         return str_replace(['\\', '%', '_'], ['\\\\', '\%', '\_'], $str);

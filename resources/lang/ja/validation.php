@@ -157,7 +157,12 @@ return [
         'name' => 'ユーザー名',
         'email' => 'メールアドレス',
         'password' => 'パスワード',
-        'content' => '投稿内容',
+        'product_name' => '商品名',
+        'company_id' => 'メーカー名',
+        'price' => '価格',
+        'stock' => '在庫数',
+        'content' => 'コメント',
+        'img_path' => '商品画像',
     ],
 
 ];
