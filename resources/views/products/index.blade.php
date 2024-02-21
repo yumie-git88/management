@@ -23,11 +23,8 @@
                 <select name="company_id" id="company_id" class="form-control" data-toggle="select" 
                     value="{{ old('company_id')}}">
                     <option value="">未選択</option>
-                    <!-- <option disabled style='display:none;' @if (empty($companies->company_id)) selected @endif>未選択</option> -->
                     @foreach($companies as $company)
-                    <!-- <option value="{{ $company->id }}">{{ $company->company_name }}</option> -->
-                    <option value="{{ $company->id }}" @if($company->id == $company->company_id) selected @endif>{{ $company->company_name }}</option>
-                    <!-- <option value="{{ $company->id }}" @selected(old('company_id') == $company->id)>{{ $company->company_name }}</option> -->
+                    <option value="{{ $company->id }}">{{ $company->company_name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -51,7 +48,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>id</th>
+                    <th>ID</th>
                     <th>商品画像</th>
                     <th>商品名</th>
                     <th>メーカー名</th>
@@ -73,12 +70,12 @@
                     <td>{{ $product->comment }}</td>
                     </td>
                     <td>
-                        <a href="{{ route('products.show', $product) }}" class="btn btn-info btn-sm mx-1">詳細表示</a>
-                        <form method="POST" action="{{ route('products.destroy', $product) }}" class="d-inline" 
+                        <a href="{{ route('products.show', $product) }}" class="btn btn-info btn-sm mx-1 mb-1">詳細表示</a>
+                        <form method="POST" action="{{ route('products.destroy', $product) }}" class="d-inline"
                             onsubmit="return confirm('本当に削除しますか？')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm mx-1">削除</button>
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm mx-1 mb-1">削除</button>
                         </form>
                     </td>
                 </tr>
