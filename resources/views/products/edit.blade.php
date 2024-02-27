@@ -48,7 +48,7 @@
                                 <input type="number" class="form-control" id="price" name="price"
                                     value="{{ $product->price }}" required>
                                 @if($errors->has('price'))
-                                    <p class="text-danger">{{ $errors->first('price) }}</p>
+                                    <p class="text-danger">{{ $errors->first('price') }}</p>
                                 @endif
                             </div>
 

@@ -35,7 +35,7 @@
             <label for="price" class="form-label">価格<span class="text-danger">*</span></label>
             <input id="price" type="text" name="price" class="form-control" required value="{{ old('price')}}">
             @if($errors->has('price'))
-                <p class="text-danger">{{ $errors->first('price) }}</p>
+                <p class="text-danger">{{ $errors->first('price') }}</p>
             @endif
         </div>
         
