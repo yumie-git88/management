@@ -34,3 +34,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('products', ProductController::class);
 });
 
+// Route::post('/search', 'ProductController@index')->name('search'); // search

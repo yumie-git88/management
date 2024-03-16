@@ -15,6 +15,21 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.0/js/jquery.tablesorter.min.js"></script>
+
+    <style>
+        /* 検索の上下アイコンを削除/マウスオーバー */
+        .table-sort {
+        background-image: none;
+        }
+        .table-th:hover {
+            background-color: #e0e2e5;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -79,5 +94,20 @@
             @yield('content')
         </main>
     </div>
+
+    <script>
+        $(document).ready(function() { // ソート並び替え
+            $('#table-sort').tablesorter({
+                headers: {
+                1: { sorter: false },
+                6: { sorter: false },
+                7: { sorter: false }
+                }
+            });
+        });
+        
+        $('[data-toggle="tooltip"]').tooltip(); // マウスオーバー吹き出し
+    </script>
+
 </body>
 </html>

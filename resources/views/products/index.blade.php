@@ -31,7 +31,7 @@
 
             <!-- 検索ボタン -->
             <div class="col-sm-12 col-md-1">
-                <button class="btn btn-success" type="submit">検索</button>
+                <button class="btn btn-success search-form" type="submit" name="search-form">検索</button>
             </div>
             
             <!-- 検索条件をリセットするリンクボタン -->
@@ -45,17 +45,17 @@
 
     <div class="products mt-5">
         <h2>商品情報</h2>
-        <table class="table table-striped">
+        <table class="table table-striped" id="table-sort">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>商品画像</th>
-                    <th>商品名</th>
-                    <th>メーカー名</th>
-                    <th>価格</th>
-                    <th>在庫数</th>
-                    <th>コメント</th>
-                    <th>操作</th>
+                    <th data-toggle="tooltip" title="↑↓並び替え" class="table-th">ID</th>
+                    <th class="table-th">商品画像</th>
+                    <th data-toggle="tooltip" title="↑↓並び替え" class="table-th">商品名</th>
+                    <th data-toggle="tooltip" title="↑↓並び替え" class="table-th">メーカー名</th>
+                    <th data-toggle="tooltip" title="↑↓並び替え" class="table-th">価格</th>
+                    <th data-toggle="tooltip" title="↑↓並び替え" class="table-th">在庫数</th>
+                    <th class="table-th">コメント</th>
+                    <th class="table-th">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -86,5 +86,31 @@
 
     {{ $products->appends(request()->query())->links() }}
 
+    <script> //ajax
+        $.ajaxSetup({
+            headers: { 'X-CSRF-TOKEN': $("[name='csrf-token']").attr("content") },
+        })
+        $('.search-form').on('click', function(){
+            let txtSearch = $('input[name="search"]').val();
+            let drpSearch = $('input[name="company_id"]').val();
+            $.ajax({
+                url: '/product/index/',
+                method: "GET", //"POST",
+                // data: {
+                //     txtSearch : txtSearch,
+                //     drpSearch : drpSearch,
+                // },
+                dataType: "json",
+            }).done(function(data){ // 通信成功
+                console.log(data);
+            }).fail(function(jqXHR, textStatus, errorThrown){ // 通信の失敗
+                alert('検索が失敗しました');
+                console.log("jqXHR          : " + jqXHR.status); // HTTPステータスが取得
+                console.log("textStatus     : " + textStatus);    // タイムアウト、パースエラー
+                console.log("errorThrown    : " + errorThrown.message); // 例外情報
+                console.log("URL            : " + url);
+            });
+        });
+    </script>
 </div>
 @endsection

@@ -49,6 +49,7 @@ class ProductController extends Controller
             $products = $query->paginate(10); // Product::paginate(10); // all();
     
             // 商品一覧画面を表示し、取得した全ての商品情報を画面に渡す
+            // return response()->json('products.index', compact($query, $companies));
             return view('products.index', compact('products', 'companies'));
         } catch (\Throwable $e) {
             \DB::rollback(); // 例外が起きたらロールバックを行う
@@ -56,6 +57,15 @@ class ProductController extends Controller
             throw $e; // フロントにエラーを通知
         }
     }
+
+    // public function search() //ajax
+    // {
+    //     $search = $request->get('keyword');
+    //     $company_id = $request->get('select');
+    //     $search = Product::find($keyword)->search;
+    //     $company_id = Product::find($select)->company_id;
+    //     return response()->json(['search' => $search, 'company_id' => $company_id]);
+    // }
 
     /**
      * Show the form for creating a new resource.
