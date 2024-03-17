@@ -14,28 +14,54 @@
         <form action="{{ route('products.index') }}" method="GET" class="row g-3">
 
             <!-- 商品名検索用の入力欄 -->
-            <div class="col-sm-12 col-md-3">
+            <div class="col-sm-12 col-md-2 mt-3">
                 <input type="text" name="search" class="form-control" placeholder="商品名" value="{{ request('search') }}">
             </div>
-
-            <!--メーカー名検索用の選択欄 -->
-            <div class="col-sm-12 col-md-2">
-                <select name="company_id" id="company_id" class="form-control" data-toggle="select" 
-                    value="{{ old('company_id')}}">
-                    <option value="">未選択</option>
-                    @foreach($companies as $company)
-                    <option value="{{ $company->id }}">{{ $company->company_name }}</option>
-                    @endforeach
-                </select>
+            
+            
+            <!-- 最安価格の入力欄 -->
+            <div class="col-sm-12 col-md-2 mt-3">
+                <input type="number" name="min_price" class="form-control" placeholder="最安価格"
+                value="{{ request('min_price') }}">
             </div>
+            <!-- 最高価格の入力欄 -->
+            <div class="col-sm-12 col-md-2 mt-3">
+                <input type="number" name="max_price" class="form-control" placeholder="最高価格"
+                    value="{{ request('max_price') }}">
+                </div>
+                
+            <!-- 最小在庫数の入力欄 -->
+            <div class="col-sm-12 col-md-2 mt-3">
+                <input type="number" name="min_stock" class="form-control" placeholder="最小在庫数"
+                value="{{ request('min_stock') }}">
+            </div>
+            
+            <!-- 最大在庫数の入力欄 -->
+            <div class="col-sm-12 col-md-2 mt-3">
+                <input type="number" name="max_stock" class="form-control" placeholder="最大在庫数"
+                value="{{ request('max_stock') }}">
+            </div>
+            
+            <!--メーカー名検索用の選択欄 -->
+            <div class="col-sm-12 col-md-2 mt-3">
+                <select name="company_id" id="company_id" class="form-control" data-toggle="select" 
+                value="{{ old('company_id')}}">
+                <option value="">メーカー名を選択</option>
+                @foreach($companies as $company)
+                <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                @endforeach
+            </select>
 
             <!-- 検索ボタン -->
-            <div class="col-sm-12 col-md-1">
+            <div class="col-sm-12 col-md-4 mt-3">
                 <button class="btn btn-success search-form" type="submit" name="search-form">検索</button>
             </div>
             
-            <!-- 検索条件をリセットするリンクボタン -->
-            <a href="{{ route('products.index') }}" class="btn btn-outline-secondary col-md-2">検索条件をリセット</a>
+            <!-- 検索条件をリセットするボタン -->
+            <a href="{{ route('products.index') }}" class="btn btn-outline-secondary mt-3">検索条件をリセット</a>
+
+        </div>
+
         </form>
     </div>
 
@@ -96,10 +122,10 @@
             $.ajax({
                 url: '/product/index/',
                 method: "GET", //"POST",
-                // data: {
-                //     txtSearch : txtSearch,
-                //     drpSearch : drpSearch,
-                // },
+                data: {
+                    txtSearch : txtSearch,
+                    drpSearch : drpSearch,
+                },
                 dataType: "json",
             }).done(function(data){ // 通信成功
                 console.log(data);
