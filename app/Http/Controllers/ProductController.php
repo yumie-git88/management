@@ -32,6 +32,26 @@ class ProductController extends Controller
             if ($search = $request->search) {
                 $query->where('product_name', 'LIKE', '%' . self::escapeLike($search) . '%');
             }
+
+            // 最安価格が指定されている場合、その価格以上の商品をクエリに追加
+            if($min_price = $request->min_price){
+                $query->where('price', '>=', $min_price);
+            }
+
+            // 最高価格が指定されている場合、その価格以下の商品をクエリに追加
+            if($max_price = $request->max_price){
+                $query->where('price', '<=', $max_price);
+            }
+
+            // 最小在庫数が指定されている場合、その在庫数以上の商品をクエリに追加
+            if($min_stock = $request->min_stock){
+                $query->where('stock', '>=', $min_stock);
+            }
+
+            // 最大在庫数が指定されている場合、その在庫数以下の商品をクエリに追加
+            if($max_stock = $request->max_stock){
+                $query->where('stock', '<=', $max_stock);
+            }
     
             // メーカー名が同じ場合、そのメーカー名をクエリに追加
             if ($company_id = $request->company_id) {

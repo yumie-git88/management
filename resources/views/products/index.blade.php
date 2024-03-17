@@ -14,10 +14,9 @@
         <form action="{{ route('products.index') }}" method="GET" class="row g-3">
 
             <!-- 商品名検索用の入力欄 -->
-            <div class="col-sm-12 col-md-2 mt-3">
+            <div class="col-sm-12 col-md-3 mt-3">
                 <input type="text" name="search" class="form-control" placeholder="商品名" value="{{ request('search') }}">
             </div>
-            
             
             <!-- 最安価格の入力欄 -->
             <div class="col-sm-12 col-md-2 mt-3">
@@ -31,19 +30,19 @@
                 </div>
                 
             <!-- 最小在庫数の入力欄 -->
-            <div class="col-sm-12 col-md-2 mt-3">
-                <input type="number" name="min_stock" class="form-control" placeholder="最小在庫数"
+            <div class="col-sm-12 col-md-1 mt-3">
+                <input type="number" name="min_stock" class="form-control" placeholder="最小数"
                 value="{{ request('min_stock') }}">
             </div>
             
             <!-- 最大在庫数の入力欄 -->
-            <div class="col-sm-12 col-md-2 mt-3">
-                <input type="number" name="max_stock" class="form-control" placeholder="最大在庫数"
+            <div class="col-sm-12 col-md-1 mt-3">
+                <input type="number" name="max_stock" class="form-control" placeholder="最大数"
                 value="{{ request('max_stock') }}">
             </div>
             
             <!--メーカー名検索用の選択欄 -->
-            <div class="col-sm-12 col-md-2 mt-3">
+            <div class="col-sm-12 col-md-3 mt-3">
                 <select name="company_id" id="company_id" class="form-control" data-toggle="select" 
                 value="{{ old('company_id')}}">
                 <option value="">メーカー名を選択</option>
@@ -52,14 +51,12 @@
                 @endforeach
             </select>
 
-            <!-- 検索ボタン -->
-            <div class="col-sm-12 col-md-4 mt-3">
-                <button class="btn btn-success search-form" type="submit" name="search-form">検索</button>
+            <div class="row m-2">
+                <!-- 検索ボタン -->
+                <button class="btn btn-success search-form col-auto" type="submit" name="search-form">検索</button>
+                <!-- 検索条件をリセットするボタン -->
+                <a href="{{ route('products.index') }}" class="btn btn-outline-secondary pull-left ms-2 col-auto">検索条件をリセット</a>
             </div>
-            
-            <!-- 検索条件をリセットするボタン -->
-            <a href="{{ route('products.index') }}" class="btn btn-outline-secondary mt-3">検索条件をリセット</a>
-
         </div>
 
         </form>
